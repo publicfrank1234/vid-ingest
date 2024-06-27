@@ -1,0 +1,5 @@
+gcs_credential.json
+**/client_secrets.json
+.vid/
+.DS_Store
+*.pyc
