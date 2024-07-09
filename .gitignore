@@ -3,3 +3,5 @@ gcs_credential.json
 .vid/
 .DS_Store
 *.pyc
+.env
+token.json

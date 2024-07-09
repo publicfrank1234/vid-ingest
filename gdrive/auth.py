@@ -5,9 +5,11 @@ from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 
-CLIENT_SECRETS_FILE = "client_secrets.json"
-TOKEN_FILE = "token.json"
+# Configuration from environment variables
+CLIENT_SECRETS_FILE = os.getenv("GDRIVE_CLIENT_SECRETS_FILE", "client_secrets.json")
+TOKEN_FILE = os.getenv("GDRIVE_TOKEN_FILE", "token.json")
 SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
+PORT = int(os.getenv("GDRIVE_AUTH_SERVER_PORT", 8888))
 
 
 def get_credentials():
@@ -25,7 +27,7 @@ def get_credentials():
             flow = InstalledAppFlow.from_client_secrets_file(
                 CLIENT_SECRETS_FILE, SCOPES
             )
-            credentials = flow.run_local_server(port=0)
+            credentials = flow.run_local_server(port=PORT)
 
         with open(TOKEN_FILE, "w") as token:
             token.write(credentials.to_json())
