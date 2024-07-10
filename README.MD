@@ -2,11 +2,18 @@
 
 ## Overview
 
-The system is divided into three main parts, each with a specific objective:
+The system can be divided into three main parts, each with a specific objective:
 
 1. Video Synchronization Jobs
 2. Auto-Upload Job
 3. Search and Events Endpoints
+
+This repository is for Part 1, and its goal is to synchronize all user video data and create a metadata map of all videos. However, it does not handle the uploading process. The uploading is managed by Parts 2 and 3. 
+
+In the initial version, we might test the upload functionality by automatically updating everything within Part 1 as well.
+
+Currently, the focus is solely on video data, but it can be extended to include other types of data, such as text, in the future.Text data may potentially help to further enhance the video context and understanding. 
+
 
 ## 1. Video Synchronization Jobs
 
