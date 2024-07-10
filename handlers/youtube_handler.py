@@ -5,7 +5,7 @@ from pytube import YouTube
 def youtube_handler(url):
     # Replace https: with http: to bypass TLS fingerprint issue
     url = url.replace("https:", "http:")
-    download_youtube_video(url)
+    # download_youtube_video(url)
     return fetch_youtube_video_metadata(url)
 
 
