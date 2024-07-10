@@ -5,3 +5,4 @@ gcs_credential.json
 *.pyc
 .env
 token.json
+.airflow.sh

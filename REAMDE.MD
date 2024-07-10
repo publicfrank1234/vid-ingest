@@ -1,42 +1,76 @@
-# Google Drive to Google Cloud Storage Video File Transfer
+Detailed Architecture Explanation
+Overview
+The system is divided into three main parts, each with a specific objective:
 
-This script transfers video files from a specified Google Drive folder to a Google Cloud Storage (GCS) bucket. It supports accessing public Google Drive folders without authentication and private folders with OAuth authentication.
+Video Synchronization Jobs
+Auto-Upload Job
+Search and Events Endpoints
+1. Video Synchronization Jobs
+Objective:
+Periodically pull public and private videos from various sources, index, and save them to create a holistic view of the video data.
 
-## Prerequisites
+Components:
 
-1. **Python 3.x**
-2. **Google Cloud SDK** for setting up the GCS bucket and service account credentials.
-3. **Required Python packages**:
-   - `google-auth`
-   - `google-auth-oauthlib`
-   - `google-auth-httplib2`
-   - `google-api-python-client`
-   - `google-cloud-storage`
-   - `python-dotenv`
+Video Handlers: Modules to handle video fetching from different sources (e.g., Google Drive, YouTube, Zoom, Gong).
+Airflow DAGs: Workflows in Apache Airflow to manage the periodic execution of video synchronization tasks.
+Data Storage: A centralized repository (e.g., a database) to store metadata and indexed information about the videos.
+Process:
 
-## Setup
+Fetch User URLs: Retrieve URLs of videos to be synchronized from a user-specific source (e.g., a database or an API).
+Process URLs: Use the appropriate handler to process each URL and retrieve video data.
+Index Data: Create an index of the video data for efficient search and retrieval.
+Save to Database: Store the indexed video data in a database.
+Importance of Holistic View:
 
-### Google Cloud Setup
+Foundation for Auto-Upload Jobs: Provides a complete and up-to-date repository of all video data, enabling automated rules to upload videos accurately based on predefined criteria.
+Video Search: Allows users to search across the entire video data set, providing comprehensive search results from multiple sources.
+User Inquiries and Updates: Supports endpoints to notify users of new updates and allows them to query the entire dataset for specific information.
+2. Auto-Upload Job
+Objective:
+Periodically pull auto-upload rules and use the holistic view of the video data to upload videos according to preset rules.
 
-1. **Create a project in the [Google Cloud Console](https://console.cloud.google.com/)**.
-2. **Enable the Google Drive API and Google Cloud Storage API**.
-3. **Create a service account and download the JSON key file**. Save this file in your project directory as `gcs_credential.json`.
-4. **Create a GCS bucket** to store the video files.
-5. **Create a `.env` file** in your project directory with the following content:
-   ```plaintext
-   GCS_BUCKET_NAME=<your_gcs_bucket_name>
-   GCS_CREDENTIALS_JSON=gcs_credential.json
+Components:
 
+Auto-Upload Rule Fetcher: A component to fetch the auto-upload rules from a predefined source.
+Airflow DAGs: Workflows to schedule and execute the auto-upload tasks based on the rules.
+Uploader: A component that handles the actual uploading of videos according to the fetched rules.
+Process:
 
-### OAuth Client Setup
-In the Google Cloud Console, create OAuth 2.0 credentials.
-Download the client_secrets.json file and save it in your project directory.
-Running the Script
-Specify the Google Drive Folder URL:
+Fetch Auto-Upload Rules: Retrieve the rules for auto-uploading videos.
+Match Rules with Data: Use the holistic view of the video data to determine which videos need to be uploaded according to the rules.
+Upload Videos: Upload the matched videos to the specified destinations.
+Dependency on Holistic View:
 
-Pass the Google Drive folder URL as a command-line argument when running the script.
-Run the Script:
+The holistic view created in Part 1 ensures that the auto-upload job has access to the latest and most complete video data, enabling accurate and efficient video uploads based on user-defined rules.
+3. Search and Events Endpoints
+Objective:
+Provide endpoints to query the entire video data for new updates and perform searches.
 
-bash
-Copy code
-python main.py "https://drive.google.com/drive/folders/<your_google_drive_f
+Components:
+Search API: An endpoint to search through the indexed video data.
+Events API: An endpoint to provide updates and notifications about new or changed video data.
+Process:
+Search Endpoint (/search): Allows users to search for videos based on various criteria (e.g., keywords, date range).
+Events Endpoint (/events): Provides notifications or updates about new video uploads, changes, or other relevant events.
+Dependency on Holistic View:
+
+The holistic view of video data is essential for providing accurate and comprehensive search results and event notifications. It ensures that users have access to a unified dataset, making the search and event functionalities reliable and effective.
+Overall System Architecture
+Airflow DAGs for Scheduling:
+
+Video Sync DAG:
+
+Task 1: Fetch User URLs
+Task 2: Process URLs
+Task 3: Index Data
+Task 4: Save to Database
+Auto-Upload DAG:
+
+Task 1: Fetch Auto-Upload Rules
+Task 2: Match Rules with Data
+Task 3: Upload Videos
+Components Interaction:
+
+Video Handlers: Communicate with video sources to fetch video data.
+Database: Central repository for storing indexed video data.
+Search and Events API: Interface for querying and interacting with the video data.
