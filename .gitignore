@@ -6,3 +6,5 @@ gcs_credential.json
 .env
 token.json
 .airflow.sh
+*.mp4
+*.webm
