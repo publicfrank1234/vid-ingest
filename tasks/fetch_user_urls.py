@@ -25,8 +25,12 @@ def fetch_user_urls(user_id):
             "url": "https://boostup.callai.mindtickle.com/external/recording/2392245020868898900?activeMenuKey=transcription&activeMenuKey=comments",
             "handler": "mindtickle",
         },
-        # {
-        #     "url": "https://gong.io/rec/play/example_public_recording",
-        #     "handler": "gong",
-        # },
+        {
+            "url": "https://copilot.clari.com/guest/sharedCall/668ef26154bbb72f4d082819",
+            "handler": "clari",
+        },
+        {
+            "url": "https://www.loom.com/share/aeebbb5f18044bd2a99ee63155c67e83?sid=9b633243-f4bb-41bb-aa2b-ceee17266449",
+            "handler": "loom",
+        },
     ]

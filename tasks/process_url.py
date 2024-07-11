@@ -1,6 +1,8 @@
 from airflow.decorators import task
 
+from handlers.clari_handler import clari_handler
 from handlers.google_handler import google_handler
+from handlers.loom_handler import loom_handler
 from handlers.mindtickle_handler import mindtickle_handler
 from handlers.vimeo_handler import vimeo_handler
 from handlers.youtube_handler import youtube_handler
@@ -12,7 +14,8 @@ handlers = {
     "vimeo": vimeo_handler,
     "zoom": zoom_handler,
     "mindtickle": mindtickle_handler,
-    # "gong": gong_handler.sync_gong_videos,
+    "clari": clari_handler,
+    "loom": loom_handler,
 }
 
 
