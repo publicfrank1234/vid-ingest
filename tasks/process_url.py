@@ -1,14 +1,17 @@
 from airflow.decorators import task
 
 from handlers.google_handler import google_handler
+from handlers.mindtickle_handler import mindtickle_handler
 from handlers.vimeo_handler import vimeo_handler
 from handlers.youtube_handler import youtube_handler
+from handlers.zoom_handler import zoom_handler
 
 handlers = {
     "google": google_handler,
     "youtube": youtube_handler,
     "vimeo": vimeo_handler,
-    # "zoom": zoom_handler.sync_zoom_videos,
+    "zoom": zoom_handler,
+    "mindtickle": mindtickle_handler,
     # "gong": gong_handler.sync_gong_videos,
 }
 

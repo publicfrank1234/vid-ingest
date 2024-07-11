@@ -17,10 +17,14 @@ def fetch_user_urls(user_id):
             "url": "https://www.youtube.com/watch?v=LEjhY15eCx0",
             "handler": "youtube",
         },
-        # {
-        #     "url": "https://zoom.us/rec/play/example_public_recording",
-        #     "handler": "zoom",
-        # },
+        {
+            "url": "https://us05web.zoom.us/clips/share/1qKe_m7qvUeMN3sRDvv1-YiWiE-N7rCv8_RW6rAmUnz2jw6Sh_nPP9_20cGYkmNfJ4n7Tw6wS2RLHZoBi1QJ_lnoUg.AjbHNFxALSen5ByE",
+            "handler": "zoom",
+        },
+        {
+            "url": "https://boostup.callai.mindtickle.com/external/recording/2392245020868898900?activeMenuKey=transcription&activeMenuKey=comments",
+            "handler": "mindtickle",
+        },
         # {
         #     "url": "https://gong.io/rec/play/example_public_recording",
         #     "handler": "gong",

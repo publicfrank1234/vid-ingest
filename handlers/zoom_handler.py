@@ -2,31 +2,43 @@ import os
 
 import requests
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 def fetch_zoom_metadata(url):
-    response = requests.get(url)
-    response.raise_for_status()
-    soup = BeautifulSoup(response.content, "html.parser")
-
-    # Extract metadata using the specific selector for the title
-    title_element = soup.select_one(
-        "#mv-share > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > span > span"
+    options = webdriver.ChromeOptions()
+    options.add_argument("--headless")
+    options.add_argument("--disable-gpu")
+    driver = webdriver.Chrome(
+        service=ChromeService(ChromeDriverManager().install()), options=options
     )
-    title = title_element.get_text(strip=True) if title_element else "Zoom Video"
+    driver.get(url)
 
-    description_tag = soup.find("meta", {"name": "description"})
-    description = (
-        description_tag["content"].strip()
-        if description_tag
-        else "Zoom Video Description"
+    wait = WebDriverWait(driver, 20)
+    title_element = wait.until(
+        EC.presence_of_element_located(
+            (
+                By.CSS_SELECTOR,
+                "#mv-share > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(3) > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > span > span",
+            )
+        )
     )
+    title = title_element.text.strip() if title_element else "Zoom Video"
+
+    description = "Zoom Video Description"
 
     metadata = {
         "url": url,
         "title": title,
         "description": description,
     }
+
+    driver.quit()
     return metadata
 
 
@@ -74,7 +86,6 @@ def is_zoom_clip(url):
 
 
 if __name__ == "__main__":
-    # Replace with your actual public Zoom URL
     public_zoom_url = "https://us05web.zoom.us/clips/share/1qKe_m7qvUeMN3sRDvv1-YiWiE-N7rCv8_RW6rAmUnz2jw6Sh_nPP9_20cGYkmNfJ4n7Tw6wS2RLHZoBi1QJ_lnoUg.AjbHNFxALSen5ByE"
 
     if is_zoom_clip(public_zoom_url):
